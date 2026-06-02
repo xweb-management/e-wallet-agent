@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Management — Management Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+/* ══════════════════════════════════════════════
+   Web management Dashboard — style.css
+   Design: Dark industrial-refined SaaS
+══════════════════════════════════════════════ */
+
+:root {
+  --bg:         #0d0f14;
+  --bg2:        #13151c;
+  --bg3:        #1a1d27;
+  --border:     rgba(255,255,255,0.07);
+  --border2:    rgba(255,255,255,0.12);
+  --text:       #e8eaf0;
+  --text-muted: #6b7280;
+  --text-dim:   #9ca3af;
+  --accent:     #6366f1;
+  --accent2:    #818cf8;
+  --success:    #10b981;
+  --warning:    #f59e0b;
+  --danger:     #ef4444;
+  --sidebar-w:  248px;
+  --radius:     12px;
+  --radius-sm:  8px;
+  --shadow:     0 4px 24px rgba(0,0,0,0.35);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══════════════════ SCROLLBAR ══════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ══════════════════ UTILITIES ══════════════════ */
+.active { display: flex !important; }
+
+/* ══════════════════ LOGIN ══════════════════ */
+.login-page {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+
+.login-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb1 { width: 400px; height: 400px; background: radial-gradient(circle, #6366f1, transparent); top: -100px; left: -100px; animation-delay: 0s; }
+.orb2 { width: 300px; height: 300px; background: radial-gradient(circle, #10b981, transparent); bottom: -80px; right: -60px; animation-delay: 3s; }
+.orb3 { width: 200px; height: 200px; background: radial-gradient(circle, #ec4899, transparent); top: 50%; right: 20%; animation-delay: 5s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+.login-card {
+  background: rgba(19, 21, 28, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 44px 40px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.brand-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.login-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.login-sub {
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  font-size: 0.92rem;
+}
+
+.login-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  margin-bottom: 18px;
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+.field-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+.field-group input::placeholder { color: var(--text-muted); }
+
+.btn-login {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-top: 8px;
+}
+
+.btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-login:active { transform: translateY(0); }
+
+.login-hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-top: 16px;
+}
+
+/* ══════════════════ DASHBOARD LAYOUT ══════════════════ */
+.dashboard-page {
+  display: none;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 200;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 150;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sidebar-close {
+  display: none;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 14px 8px 6px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+
+.nav-item.active {
+  background: rgba(99,102,241,0.15);
+  color: var(--accent2);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-icon {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 99px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.btn-logout {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  padding: 7px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.btn-logout:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ── MAIN ── */
+.main-content {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 64px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 6px;
+}
+
+.topbar-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.notif-btn {
+  position: relative;
+  cursor: pointer;
+  color: var(--text-dim);
+  display: flex;
+  padding: 6px;
+}
+
+.notif-dot {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 8px; height: 8px;
+  background: var(--danger);
+  border-radius: 50%;
+  border: 2px solid var(--bg2);
+}
+
+/* ── PAGE CONTENT ── */
+.page-content {
+  flex: 1;
+  padding: 28px 28px 48px;
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeUp 0.3s ease;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.page-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+/* ── STAT CARDS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stats-grid.mini {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.stat-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.stat-change {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.stat-change.positive { color: var(--success); }
+.stat-change.negative { color: var(--danger); }
+
+/* mini stat */
+.mini-stat {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mini-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.mini-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.mini-val.green { color: var(--success); }
+.mini-val.amber { color: var(--warning); }
+
+/* ── SECTION GRID ── */
+.section-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card-header h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── TABLES ── */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.data-table thead th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+.data-table tbody td {
+  padding: 12px 16px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.data-table tbody td:first-child { color: var(--text-muted); font-size: 0.8rem; }
+
+/* STATUS BADGES */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-completed, .badge-active {
+  background: rgba(16,185,129,0.12);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+.badge-pending {
+  background: rgba(245,158,11,0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+.badge-inactive {
+  background: rgba(107,114,128,0.12);
+  color: #9ca3af;
+  border: 1px solid rgba(107,114,128,0.2);
+}
+
+.badge-suspended, .badge-failed {
+  background: rgba(239,68,68,0.12);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.badge-deposit {
+  background: rgba(99,102,241,0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99,102,241,0.2);
+}
+
+.badge-withdrawal {
+  background: rgba(245,158,11,0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+/* ACTION BUTTONS */
+.btn-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  color: var(--text-muted);
+  display: inline-flex;
+}
+
+.btn-action:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+.btn-action.edit:hover { color: var(--accent2); }
+.btn-action.delete:hover { color: var(--danger); }
+
+/* ── ACTIVITY LIST ── */
+.activity-list {
+  padding: 8px 0;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.activity-item:last-child { border-bottom: none; }
+.activity-item:hover { background: rgba(255,255,255,0.03); }
+
+.activity-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.activity-info { flex: 1; min-width: 0; }
+.activity-name { font-size: 0.88rem; font-weight: 500; color: var(--text); }
+.activity-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+.activity-amount { font-size: 0.88rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-dim);
+  border: 1px solid var(--border2);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-danger:hover { opacity: 0.88; }
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--accent2);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.btn-text:hover { color: var(--accent); }
+
+/* ── SEARCH / FILTER ── */
+.search-input {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.87rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 200px;
+}
+
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-muted); }
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-select {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.87rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ── SETTINGS ── */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.settings-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.settings-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  color: var(--text);
+  font-size: 0.93rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.settings-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+.settings-input option { background: var(--bg2); }
+
+/* TOGGLE */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.toggle-row:last-child { border-bottom: none; }
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 42px; height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  transition: background 0.3s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle input:checked + .toggle-slider { background: var(--accent); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+/* ── MODALS ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: var(--shadow-lg);
+  animation: fadeUp 0.25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-sm { max-width: 380px; }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-close:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-body p { color: var(--text-dim); font-size: 0.92rem; }
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.req { color: var(--danger); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 12px 22px;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.empty-state svg {
+  opacity: 0.3;
+  margin-bottom: 12px;
+}
+
+/* ══════════════════ RESPONSIVE ══════════════════ */
+@media (max-width: 1100px) {
+  .section-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .settings-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 300;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.open { display: block; }
+  .sidebar-close { display: block; }
+  .hamburger { display: flex; }
+
+  .main-content { margin-left: 0; }
+
+  .page-content { padding: 16px 16px 48px; }
+
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stats-grid.mini { grid-template-columns: 1fr; }
+
+  .stat-card { padding: 16px; }
+  .stat-value { font-size: 1.3rem; }
+
+  .form-grid { grid-template-columns: 1fr; }
+
+  .search-input { width: 140px; }
+
+  .topbar-date { display: none; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .login-card { padding: 32px 22px; }
+  .modal { border-radius: 12px; }
+  .filter-row { flex-direction: column; align-items: stretch; }
+  .search-input { width: 100%; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- ═══════════════ LOGIN PAGE ═══════════════ -->
+  <div id="loginPage" class="login-page active">
+    <div class="login-bg">
+      <div class="login-orb orb1"></div>
+      <div class="login-orb orb2"></div>
+      <div class="login-orb orb3"></div>
+    </div>
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" fill="currentColor" opacity="0.15"/>
+            <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand-name">Web Management</span>
+      </div>
+      <h1 class="login-title">Welcome back</h1>
+      <p class="login-sub">Sign in to your admin dashboard</p>
+      <div id="loginError" class="login-error" style="display:none">Wrong Username/Password. </div>
+      <div class="field-group">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="Enter username" autocomplete="off" />
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" />
+      </div>
+      <button class="btn-login" onclick="handleLogin()">Sign In</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DASHBOARD PAGE ═══════════════ -->
+  <div id="dashboardPage" class="dashboard-page">
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" fill="currentColor" opacity="0.2"/>
+            <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand-name">Web Management</span>
+        <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a href="#" class="nav-item active" data-page="dashboard" onclick="navigate('dashboard',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          Dashboard
+        </a>
+        <a href="#" class="nav-item" data-page="agents" onclick="navigate('agents',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Agents
+          <span class="nav-badge" id="agentCountBadge">0</span>
+        </a>
+
+        <div class="nav-section-label">Finance</div>
+        <a href="#" class="nav-item" data-page="deposits" onclick="navigate('deposits',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
+          </span>
+          Deposits
+        </a>
+        <a href="#" class="nav-item" data-page="withdrawals" onclick="navigate('withdrawals',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </span>
+          Withdrawals
+        </a>
+        <a href="#" class="nav-item" data-page="commissions" onclick="navigate('commissions',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          Commissions
+        </a>
+        <a href="#" class="nav-item" data-page="transactions" onclick="navigate('transactions',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </span>
+          Transactions
+        </a>
+
+        <div class="nav-section-label">System</div>
+        <a href="#" class="nav-item" data-page="settings" onclick="navigate('settings',this)">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M2 12h2M20 12h2"/></svg>
+          </span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">A</div>
+          <div class="user-details">
+            <span class="user-name">Admin</span>
+            <span class="user-role">Super Admin</span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()" title="Logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <button class="hamburger" onclick="openSidebar()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title" id="pageTitle">Dashboard</div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbarDate"></div>
+          <div class="notif-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot"></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE SECTIONS -->
+      <div class="page-content">
+
+        <!-- ── DASHBOARD ── -->
+        <section id="page-dashboard" class="page active">
+          <div class="page-header">
+            <h2>Overview</h2>
+            <p>Welcome back, here's what's happening today.</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card" style="--accent:#6366f1">
+              <div class="stat-icon" style="background:rgba(99,102,241,0.12);color:#6366f1">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Agents</span>
+                <span class="stat-value" id="statAgents">0</span>
+                <span class="stat-change positive">↑ 3 this month</span>
+              </div>
+            </div>
+            <div class="stat-card" style="--accent:#10b981">
+              <div class="stat-icon" style="background:rgba(16,185,129,0.12);color:#10b981">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Deposits</span>
+                <span class="stat-value" id="statDeposits">$0</span>
+                <span class="stat-change positive">↑ 12.4%</span>
+              </div>
+            </div>
+            <div class="stat-card" style="--accent:#f59e0b">
+              <div class="stat-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Withdrawals</span>
+                <span class="stat-value" id="statWithdrawals">$0</span>
+                <span class="stat-change negative">↓ 2.1%</span>
+              </div>
+            </div>
+            <div class="stat-card" style="--accent:#ec4899">
+              <div class="stat-icon" style="background:rgba(236,72,153,0.12);color:#ec4899">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Profit</span>
+                <span class="stat-value" id="statProfit">$0</span>
+                <span class="stat-change positive">↑ 8.7%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3>Recent Transactions</h3>
+                <button class="btn-text" onclick="navigate('transactions', document.querySelector('[data-page=transactions]'))">View all →</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table" id="recentTxTable">
+                  <thead><tr><th>Agent</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                  <tbody id="recentTxBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Agent Activity</h3></div>
+              <div id="agentActivityList" class="activity-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── AGENTS ── -->
+        <section id="page-agents" class="page">
+          <div class="page-header">
+            <h2>Agent Management</h2>
+            <button class="btn-primary" onclick="openAgentModal()">+ Add Agent</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>All Agents</h3>
+              <input class="search-input" type="text" placeholder="Search agents…" oninput="filterAgents(this.value)" />
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Region</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+                <tbody id="agentsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── DEPOSITS ── -->
+        <section id="page-deposits" class="page">
+          <div class="page-header">
+            <h2>Deposit Tracking</h2>
+            <button class="btn-primary" onclick="openDepositModal()">+ Add Deposit</button>
+          </div>
+          <div class="stats-grid mini">
+            <div class="mini-stat"><span class="mini-label">Total Deposited</span><span class="mini-val" id="totalDepositedVal">$0</span></div>
+            <div class="mini-stat"><span class="mini-label">Completed</span><span class="mini-val green" id="depositCompletedVal">0</span></div>
+            <div class="mini-stat"><span class="mini-label">Pending</span><span class="mini-val amber" id="depositPendingVal">0</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>All Deposits</h3>
+              <input class="search-input" type="text" placeholder="Search…" oninput="filterDeposits(this.value)" />
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>#</th><th>Agent</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="depositsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── WITHDRAWALS ── -->
+        <section id="page-withdrawals" class="page">
+          <div class="page-header">
+            <h2>Withdrawal Tracking</h2>
+            <button class="btn-primary" onclick="openWithdrawalModal()">+ Add Withdrawal</button>
+          </div>
+          <div class="stats-grid mini">
+            <div class="mini-stat"><span class="mini-label">Total Withdrawn</span><span class="mini-val" id="totalWithdrawnVal">$0</span></div>
+            <div class="mini-stat"><span class="mini-label">Completed</span><span class="mini-val green" id="withdrawalCompletedVal">0</span></div>
+            <div class="mini-stat"><span class="mini-label">Pending</span><span class="mini-val amber" id="withdrawalPendingVal">0</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>All Withdrawals</h3>
+              <input class="search-input" type="text" placeholder="Search…" oninput="filterWithdrawals(this.value)" />
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>#</th><th>Agent</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="withdrawalsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── COMMISSIONS ── -->
+        <section id="page-commissions" class="page">
+          <div class="page-header">
+            <h2>Commission Reports</h2>
+          </div>
+          <div class="stats-grid mini">
+            <div class="mini-stat"><span class="mini-label">Total Commission</span><span class="mini-val green" id="totalCommissionVal">$0</span></div>
+            <div class="mini-stat"><span class="mini-label">Avg Commission Rate</span><span class="mini-val" id="avgCommissionRate">0%</span></div>
+            <div class="mini-stat"><span class="mini-label">Transactions</span><span class="mini-val" id="commissionTxCount">0</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Commission Breakdown</h3></div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>#</th><th>Agent</th><th>Transaction</th><th>Amount</th><th>Rate</th><th>Commission</th><th>Date</th></tr></thead>
+                <tbody id="commissionsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── TRANSACTIONS ── -->
+        <section id="page-transactions" class="page">
+          <div class="page-header">
+            <h2>All Transactions</h2>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Transaction Log</h3>
+              <div class="filter-row">
+                <select class="filter-select" onchange="filterTransactions(this.value)">
+                  <option value="all">All Types</option>
+                  <option value="deposit">Deposits</option>
+                  <option value="withdrawal">Withdrawals</option>
+                </select>
+                <input class="search-input" type="text" placeholder="Search…" oninput="searchTransactions(this.value)" />
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>#</th><th>Agent</th><th>Type</th><th>Amount</th><th>Commission</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody id="transactionsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── SETTINGS ── -->
+        <section id="page-settings" class="page">
+          <div class="page-header">
+            <h2>Settings</h2>
+          </div>
+          <div class="settings-grid">
+            <div class="card settings-card">
+              <h3>General Settings</h3>
+              <div class="field-group">
+                <label>Platform Name</label>
+                <input type="text" value="Web Management" class="settings-input" />
+              </div>
+              <div class="field-group">
+                <label>Admin Email</label>
+                <input type="email" value="admin@agentflow.io" class="settings-input" />
+              </div>
+              <div class="field-group">
+                <label>Currency</label>
+                <select class="settings-input">
+                  <option>USD — $</option>
+                  <option>EUR — €</option>
+                  <option>GBP — £</option>
+                  <option>BDT — ৳</option>
+                </select>
+              </div>
+              <button class="btn-primary" onclick="showToast('Settings saved!')">Save Changes</button>
+            </div>
+            <div class="card settings-card">
+              <h3>Commission Settings</h3>
+              <div class="field-group">
+                <label>Default Commission Rate (%)</label>
+                <input type="number" value="5" min="0" max="100" class="settings-input" id="defaultCommRate" />
+              </div>
+              <div class="field-group">
+                <label>Commission Calculation</label>
+                <select class="settings-input">
+                  <option>Per Transaction</option>
+                  <option>Monthly</option>
+                  <option>Weekly</option>
+                </select>
+              </div>
+              <button class="btn-primary" onclick="showToast('Commission settings saved!')">Save Changes</button>
+            </div>
+            <div class="card settings-card">
+              <h3>Security</h3>
+              <div class="field-group">
+                <label>Current Password</label>
+                <input type="password" placeholder="••••••••" class="settings-input" />
+              </div>
+              <div class="field-group">
+                <label>New Password</label>
+                <input type="password" placeholder="••••••••" class="settings-input" />
+              </div>
+              <div class="field-group">
+                <label>Confirm Password</label>
+                <input type="password" placeholder="••••••••" class="settings-input" />
+              </div>
+              <button class="btn-primary" onclick="showToast('Password updated!')">Update Password</button>
+            </div>
+            <div class="card settings-card">
+              <h3>Notifications</h3>
+              <div class="toggle-row">
+                <span>Email on new agent</span>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <span>Email on deposit</span>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <span>Email on withdrawal</span>
+                <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <span>Weekly summary report</span>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- end page-content -->
+    </main>
+  </div><!-- end dashboardPage -->
+
+  <!-- ═══════════════ MODALS ═══════════════ -->
+
+  <!-- Agent Modal -->
+  <div id="agentModal" class="modal-overlay" onclick="closeModalOnOverlay(event,'agentModal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="agentModalTitle">Add New Agent</h3>
+        <button onclick="closeModal('agentModal')" class="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="agentId" />
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="agentName" placeholder="John Doe" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="agentEmail" placeholder="john@example.com" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Phone</label>
+            <input type="text" id="agentPhone" placeholder="+1 555 000 0000" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Region</label>
+            <input type="text" id="agentRegion" placeholder="New York" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Commission Rate (%)</label>
+            <input type="number" id="agentCommRate" placeholder="5" min="0" max="100" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Status</label>
+            <select id="agentStatus" class="settings-input">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('agentModal')">Cancel</button>
+        <button class="btn-primary" onclick="saveAgent()">Save Agent</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="modal-overlay" onclick="closeModalOnOverlay(event,'depositModal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Deposit</h3>
+        <button onclick="closeModal('depositModal')" class="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Agent <span class="req">*</span></label>
+            <select id="depositAgent" class="settings-input"></select>
+          </div>
+          <div class="field-group">
+            <label>Amount ($) <span class="req">*</span></label>
+            <input type="number" id="depositAmount" placeholder="0.00" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Method</label>
+            <select id="depositMethod" class="settings-input">
+              <option>Bank Transfer</option>
+              <option>Credit Card</option>
+              <option>Cash</option>
+              <option>Mobile Money</option>
+              <option>Crypto</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Status</label>
+            <select id="depositStatus" class="settings-input">
+              <option>Completed</option>
+              <option>Pending</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('depositModal')">Cancel</button>
+        <button class="btn-primary" onclick="saveDeposit()">Save Deposit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdrawal Modal -->
+  <div id="withdrawalModal" class="modal-overlay" onclick="closeModalOnOverlay(event,'withdrawalModal')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Withdrawal</h3>
+        <button onclick="closeModal('withdrawalModal')" class="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Agent <span class="req">*</span></label>
+            <select id="withdrawalAgent" class="settings-input"></select>
+          </div>
+          <div class="field-group">
+            <label>Amount ($) <span class="req">*</span></label>
+            <input type="number" id="withdrawalAmount" placeholder="0.00" class="settings-input" />
+          </div>
+          <div class="field-group">
+            <label>Method</label>
+            <select id="withdrawalMethod" class="settings-input">
+              <option>Bank Transfer</option>
+              <option>Check</option>
+              <option>Cash</option>
+              <option>Mobile Money</option>
+              <option>Crypto</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Status</label>
+            <select id="withdrawalStatus" class="settings-input">
+              <option>Completed</option>
+              <option>Pending</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('withdrawalModal')">Cancel</button>
+        <button class="btn-primary" onclick="saveWithdrawal()">Save Withdrawal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div id="confirmModal" class="modal-overlay" onclick="closeModalOnOverlay(event,'confirmModal')">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Confirm Delete</h3>
+        <button onclick="closeModal('confirmModal')" class="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMsg">Are you sure you want to delete this item?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+        <button class="btn-danger" id="confirmBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+/* ══════════════════════════════════════════════
+   Web management Dashboard — app.js
+   Full frontend logic, no backend required
+══════════════════════════════════════════════ */
+
+/* ═══════════════════ STATE ═══════════════════ */
+const STATE = {
+  agents: [],
+  deposits: [],
+  withdrawals: [],
+  nextAgentId: 1,
+  nextDepositId: 1,
+  nextWithdrawalId: 1,
+  txFilterType: 'all',
+  txSearchQuery: '',
+  depositSearchQuery: '',
+  withdrawalSearchQuery: '',
+  agentSearchQuery: '',
+};
+
+const COLORS = ['#6366f1','#10b981','#f59e0b','#ec4899','#3b82f6','#8b5cf6','#14b8a6','#f97316'];
+
+/* ═══════════════════ SEED DATA ═══════════════════ */
+function seedData() {
+  const names = ['James Owusu','Priya Kapoor','Lena Schmidt','Carlos Vega','Amina Hassan',
+                  'Ryo Tanaka','Sophie Lefebvre','David Mensah'];
+  const regions = ['New York','London','Berlin','Lagos','Nairobi','Tokyo','Paris','Accra'];
+  const emails = names.map(n => n.toLowerCase().replace(' ','.')+`@example.com`);
+  const phones = ['+1 555 0101','+44 20 7946 0958','+49 30 2021 0101',
+                  '+234 801 234 5678','+254 722 000 001','+81 3 1234 5678',
+                  '+33 1 42 86 83 26','+233 24 000 0001'];
+  const statuses = ['Active','Active','Active','Active','Inactive','Active','Active','Suspended'];
+  const commRates = [5, 4.5, 6, 5.5, 3, 4, 5, 4.5];
+  const joinDates = ['2024-01-15','2024-02-20','2023-11-05','2024-03-10',
+                     '2023-09-18','2024-01-30','2024-04-01','2023-12-12'];
+
+  names.forEach((name, i) => {
+    STATE.agents.push({
+      id: STATE.nextAgentId++,
+      name, email: emails[i], phone: phones[i],
+      region: regions[i], status: statuses[i],
+      commRate: commRates[i], joined: joinDates[i],
+      color: COLORS[i % COLORS.length],
+    });
+  });
+
+  const methods = ['Bank Transfer','Credit Card','Cash','Mobile Money','Crypto'];
+  const depositData = [
+    { agent: 'James Owusu',    amount: 12500, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-28' },
+    { agent: 'Priya Kapoor',   amount: 8300,  method: 'Credit Card',    status: 'Completed', date: '2025-05-27' },
+    { agent: 'Lena Schmidt',   amount: 21000, method: 'Bank Transfer',  status: 'Pending',   date: '2025-05-26' },
+    { agent: 'Carlos Vega',    amount: 5700,  method: 'Cash',           status: 'Completed', date: '2025-05-25' },
+    { agent: 'Amina Hassan',   amount: 9400,  method: 'Mobile Money',   status: 'Pending',   date: '2025-05-24' },
+    { agent: 'Ryo Tanaka',     amount: 16200, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-23' },
+    { agent: 'Sophie Lefebvre',amount: 7800,  method: 'Credit Card',    status: 'Completed', date: '2025-05-22' },
+    { agent: 'David Mensah',   amount: 3300,  method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
+    { agent: 'James Owusu',    amount: 4500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
+    { agent: 'Priya Kapoor',   amount: 11000, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-19' },
+  ];
+  depositData.forEach(d => {
+    const agent = STATE.agents.find(a => a.name === d.agent) || STATE.agents[0];
+    STATE.deposits.push({ id: STATE.nextDepositId++, agentId: agent.id, agentName: d.agent,
+      amount: d.amount, method: d.method, status: d.status, date: d.date });
+  });
+
+  const withdrawalData = [
+    { agent: 'James Owusu',    amount: 3200,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-27' },
+    { agent: 'Priya Kapoor',   amount: 1800,  method: 'Check',          status: 'Pending',   date: '2025-05-26' },
+    { agent: 'Lena Schmidt',   amount: 5500,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-25' },
+    { agent: 'Carlos Vega',    amount: 900,   method: 'Cash',           status: 'Completed', date: '2025-05-24' },
+    { agent: 'Ryo Tanaka',     amount: 4100,  method: 'Mobile Money',   status: 'Pending',   date: '2025-05-23' },
+    { agent: 'Sophie Lefebvre',amount: 2600,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-22' },
+    { agent: 'David Mensah',   amount: 700,   method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
+    { agent: 'James Owusu',    amount: 1500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
+  ];
+  withdrawalData.forEach(d => {
+    const agent = STATE.agents.find(a => a.name === d.agent) || STATE.agents[0];
+    STATE.withdrawals.push({ id: STATE.nextWithdrawalId++, agentId: agent.id, agentName: d.agent,
+      amount: d.amount, method: d.method, status: d.status, date: d.date });
+  });
+}
+
+/* ═══════════════════ AUTH ═══════════════════ */
+function handleLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const err  = document.getElementById('loginError');
+  if (user === 'admin' && pass === '1234') {
+    err.style.display = 'none';
+    document.getElementById('loginPage').classList.remove('active');
+    document.getElementById('dashboardPage').style.display = 'flex';
+    refreshAll();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+function handleLogout() {
+  document.getElementById('dashboardPage').style.display = 'none';
+  document.getElementById('loginPage').classList.add('active');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// Allow pressing Enter on login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginPage').classList.contains('active')) handleLogin();
+});
+
+/* ═══════════════════ NAVIGATION ═══════════════════ */
+const PAGE_TITLES = {
+  dashboard: 'Dashboard', agents: 'Agent Management',
+  deposits: 'Deposits', withdrawals: 'Withdrawals',
+  commissions: 'Commission Reports', transactions: 'Transactions', settings: 'Settings',
+};
+
+function navigate(page, el) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Remove active from all nav items
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const pageEl = document.getElementById('page-' + page);
+  if (pageEl) pageEl.classList.add('active');
+
+  const navEl = el || document.querySelector(`[data-page="${page}"]`);
+  if (navEl) navEl.classList.add('active');
+
+  document.getElementById('pageTitle').textContent = PAGE_TITLES[page] || page;
+  closeSidebar();
+
+  // Refresh page-specific data
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'agents') renderAgentsTable();
+  if (page === 'deposits') renderDepositsTable();
+  if (page === 'withdrawals') renderWithdrawalsTable();
+  if (page === 'commissions') renderCommissions();
+  if (page === 'transactions') renderTransactions();
+}
+
+/* ═══════════════════ SIDEBAR MOBILE ═══════════════════ */
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+/* ═══════════════════ TOPBAR DATE ═══════════════════ */
+function updateDate() {
+  const now = new Date();
+  document.getElementById('topbarDate').textContent = now.toLocaleDateString('en-US', {
+    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+  });
+}
+
+/* ═══════════════════ HELPERS ═══════════════════ */
+function fmt(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtDate(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' }); }
+function initials(name) { return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(); }
+function badgeClass(status) {
+  const map = { 'Completed':'completed','Pending':'pending','Active':'active',
+                'Inactive':'inactive','Suspended':'suspended','Failed':'failed',
+                'Deposit':'deposit','Withdrawal':'withdrawal' };
+  return 'badge badge-' + (map[status] || 'pending');
+}
+
+function getAllTransactions() {
+  const deps = STATE.deposits.map(d => ({ ...d, type: 'Deposit' }));
+  const wdrs = STATE.withdrawals.map(w => ({ ...w, type: 'Withdrawal' }));
+  return [...deps, ...wdrs].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function getAgentCommRate(agentId) {
+  const a = STATE.agents.find(ag => ag.id === agentId);
+  return a ? a.commRate : 5;
+}
+
+/* ═══════════════════ REFRESH ALL ═══════════════════ */
+function refreshAll() {
+  updateDate();
+  renderDashboard();
+  renderAgentsTable();
+  renderDepositsTable();
+  renderWithdrawalsTable();
+  renderCommissions();
+  renderTransactions();
+  updateAgentCountBadge();
+}
+
+/* ═══════════════════ DASHBOARD ═══════════════════ */
+function renderDashboard() {
+  // Stats
+  const totalDeposits    = STATE.deposits.reduce((s, d) => s + d.amount, 0);
+  const totalWithdrawals = STATE.withdrawals.reduce((s, w) => s + w.amount, 0);
+  const totalProfit      = totalDeposits - totalWithdrawals;
+
+  animateValue('statAgents',      0, STATE.agents.length, 600, v => v);
+  animateValue('statDeposits',    0, totalDeposits,        800, v => fmt(v));
+  animateValue('statWithdrawals', 0, totalWithdrawals,     800, v => fmt(v));
+  animateValue('statProfit',      0, totalProfit,          800, v => fmt(v));
+
+  // Recent transactions table (last 6)
+  const recent = getAllTransactions().slice(0, 6);
+  const tbody = document.getElementById('recentTxBody');
+  tbody.innerHTML = recent.length ? recent.map(tx => `
+    <tr>
+      <td><strong style="color:var(--text)">${tx.agentName}</strong></td>
+      <td><span class="${badgeClass(tx.type)}">${tx.type}</span></td>
+      <td style="color:${tx.type==='Deposit'?'#34d399':'#fbbf24'};font-weight:600">${fmt(tx.amount)}</td>
+      <td><span class="${badgeClass(tx.status)}">${tx.status}</span></td>
+      <td>${fmtDate(tx.date)}</td>
+    </tr>`).join('') : emptyRow(5, 'No transactions yet');
+
+  // Agent activity
+  const list = document.getElementById('agentActivityList');
+  list.innerHTML = STATE.agents.slice(0, 6).map(a => {
+    const agentDeps = STATE.deposits.filter(d => d.agentId === a.id);
+    const total = agentDeps.reduce((s, d) => s + d.amount, 0);
+    return `
+      <div class="activity-item">
+        <div class="activity-avatar" style="background:${a.color}22;color:${a.color}">${initials(a.name)}</div>
+        <div class="activity-info">
+          <div class="activity-name">${a.name}</div>
+          <div class="activity-sub">${a.region} · ${agentDeps.length} deposit${agentDeps.length !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="activity-amount">${fmt(total)}</div>
+      </div>`;
+  }).join('') || '<div class="empty-state">No agents yet</div>';
+}
+
+function animateValue(id, from, to, duration, display) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = display(from + (to - from) * ease);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = display(to);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ═══════════════════ AGENTS ═══════════════════ */
+function updateAgentCountBadge() {
+  document.getElementById('agentCountBadge').textContent = STATE.agents.length;
+}
+
+function renderAgentsTable(filter = STATE.agentSearchQuery) {
+  STATE.agentSearchQuery = filter;
+  const q = filter.toLowerCase();
+  const list = q ? STATE.agents.filter(a =>
+    a.name.toLowerCase().includes(q) || a.email.toLowerCase().includes(q) ||
+    a.region.toLowerCase().includes(q) || a.status.toLowerCase().includes(q))
+    : STATE.agents;
+
+  const tbody = document.getElementById('agentsTableBody');
+  tbody.innerHTML = list.length ? list.map((a, i) => `
+    <tr>
+      <td>${a.id}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:30px;height:30px;border-radius:50%;background:${a.color}22;color:${a.color};display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">${initials(a.name)}</div>
+          <strong style="color:var(--text)">${a.name}</strong>
+        </div>
+      </td>
+      <td>${a.email}</td>
+      <td>${a.phone}</td>
+      <td>${a.region}</td>
+      <td><span class="${badgeClass(a.status)}">${a.status}</span></td>
+      <td>${fmtDate(a.joined)}</td>
+      <td>
+        <button class="btn-action edit" onclick="editAgent(${a.id})" title="Edit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn-action delete" onclick="confirmDelete('agent',${a.id})" title="Delete">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </button>
+      </td>
+    </tr>`).join('') : `<tr><td colspan="8">${emptyMsg('No agents found')}</td></tr>`;
+}
+
+function filterAgents(val) { renderAgentsTable(val); }
+
+function openAgentModal(id = null) {
+  document.getElementById('agentId').value = '';
+  document.getElementById('agentName').value = '';
+  document.getElementById('agentEmail').value = '';
+  document.getElementById('agentPhone').value = '';
+  document.getElementById('agentRegion').value = '';
+  document.getElementById('agentCommRate').value = '5';
+  document.getElementById('agentStatus').value = 'Active';
+  document.getElementById('agentModalTitle').textContent = 'Add New Agent';
+  openModal('agentModal');
+}
+
+function editAgent(id) {
+  const a = STATE.agents.find(ag => ag.id === id);
+  if (!a) return;
+  document.getElementById('agentId').value = a.id;
+  document.getElementById('agentName').value = a.name;
+  document.getElementById('agentEmail').value = a.email;
+  document.getElementById('agentPhone').value = a.phone;
+  document.getElementById('agentRegion').value = a.region;
+  document.getElementById('agentCommRate').value = a.commRate;
+  document.getElementById('agentStatus').value = a.status;
+  document.getElementById('agentModalTitle').textContent = 'Edit Agent';
+  openModal('agentModal');
+}
+
+function saveAgent() {
+  const id       = document.getElementById('agentId').value;
+  const name     = document.getElementById('agentName').value.trim();
+  const email    = document.getElementById('agentEmail').value.trim();
+  const phone    = document.getElementById('agentPhone').value.trim();
+  const region   = document.getElementById('agentRegion').value.trim();
+  const commRate = parseFloat(document.getElementById('agentCommRate').value) || 5;
+  const status   = document.getElementById('agentStatus').value;
+
+  if (!name || !email) { showToast('Name and email are required', 'error'); return; }
+
+  if (id) {
+    const a = STATE.agents.find(ag => ag.id === parseInt(id));
+    if (a) { a.name = name; a.email = email; a.phone = phone; a.region = region; a.commRate = commRate; a.status = status; }
+    showToast('Agent updated successfully');
+  } else {
+    STATE.agents.push({
+      id: STATE.nextAgentId++, name, email, phone, region, commRate, status,
+      joined: new Date().toISOString().split('T')[0],
+      color: COLORS[STATE.agents.length % COLORS.length],
+    });
+    showToast('Agent added successfully');
+  }
+
+  closeModal('agentModal');
+  renderAgentsTable();
+  updateAgentCountBadge();
+  renderDashboard();
+}
+
+/* ═══════════════════ DEPOSITS ═══════════════════ */
+function renderDepositsTable(filter = STATE.depositSearchQuery) {
+  STATE.depositSearchQuery = filter;
+  const q = filter.toLowerCase();
+  const list = q ? STATE.deposits.filter(d =>
+    d.agentName.toLowerCase().includes(q) || d.method.toLowerCase().includes(q) || d.status.toLowerCase().includes(q))
+    : STATE.deposits;
+
+  const completed = STATE.deposits.filter(d => d.status === 'Completed');
+  const pending   = STATE.deposits.filter(d => d.status === 'Pending');
+  const total     = STATE.deposits.reduce((s, d) => s + d.amount, 0);
+
+  document.getElementById('totalDepositedVal').textContent  = fmt(total);
+  document.getElementById('depositCompletedVal').textContent = completed.length;
+  document.getElementById('depositPendingVal').textContent   = pending.length;
+
+  const tbody = document.getElementById('depositsTableBody');
+  tbody.innerHTML = list.length ? list.map(d => `
+    <tr>
+      <td>${d.id}</td>
+      <td><strong style="color:var(--text)">${d.agentName}</strong></td>
+      <td style="color:#34d399;font-weight:600">${fmt(d.amount)}</td>
+      <td>${d.method}</td>
+      <td>${fmtDate(d.date)}</td>
+      <td><span class="${badgeClass(d.status)}">${d.status}</span></td>
+      <td>
+        <button class="btn-action" onclick="toggleDepositStatus(${d.id})" title="Toggle Status">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </button>
+        <button class="btn-action delete" onclick="confirmDelete('deposit',${d.id})" title="Delete">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+      </td>
+    </tr>`).join('') : `<tr><td colspan="7">${emptyMsg('No deposits found')}</td></tr>`;
+}
+
+function filterDeposits(val) { renderDepositsTable(val); }
+
+function openDepositModal() {
+  populateAgentSelect('depositAgent');
+  openModal('depositModal');
+}
+
+function saveDeposit() {
+  const agentSel = document.getElementById('depositAgent');
+  const agentId  = parseInt(agentSel.value);
+  const agent    = STATE.agents.find(a => a.id === agentId);
+  const amount   = parseFloat(document.getElementById('depositAmount').value);
+  const method   = document.getElementById('depositMethod').value;
+  const status   = document.getElementById('depositStatus').value;
+
+  if (!agent || !amount || amount <= 0) { showToast('Please fill all required fields', 'error'); return; }
+
+  STATE.deposits.unshift({
+    id: STATE.nextDepositId++, agentId, agentName: agent.name,
+    amount, method, status, date: new Date().toISOString().split('T')[0],
+  });
+
+  closeModal('depositModal');
+  document.getElementById('depositAmount').value = '';
+  renderDepositsTable();
+  renderTransactions();
+  renderDashboard();
+  showToast('Deposit added successfully');
+}
+
+function toggleDepositStatus(id) {
+  const d = STATE.deposits.find(x => x.id === id);
+  if (d) { d.status = d.status === 'Completed' ? 'Pending' : 'Completed'; }
+  renderDepositsTable();
+  renderTransactions();
+  showToast('Status updated');
+}
+
+/* ═══════════════════ WITHDRAWALS ═══════════════════ */
+function renderWithdrawalsTable(filter = STATE.withdrawalSearchQuery) {
+  STATE.withdrawalSearchQuery = filter;
+  const q = filter.toLowerCase();
+  const list = q ? STATE.withdrawals.filter(w =>
+    w.agentName.toLowerCase().includes(q) || w.method.toLowerCase().includes(q) || w.status.toLowerCase().includes(q))
+    : STATE.withdrawals;
+
+  const completed = STATE.withdrawals.filter(w => w.status === 'Completed');
+  const pending   = STATE.withdrawals.filter(w => w.status === 'Pending');
+  const total     = STATE.withdrawals.reduce((s, w) => s + w.amount, 0);
+
+  document.getElementById('totalWithdrawnVal').textContent      = fmt(total);
+  document.getElementById('withdrawalCompletedVal').textContent = completed.length;
+  document.getElementById('withdrawalPendingVal').textContent   = pending.length;
+
+  const tbody = document.getElementById('withdrawalsTableBody');
+  tbody.innerHTML = list.length ? list.map(w => `
+    <tr>
+      <td>${w.id}</td>
+      <td><strong style="color:var(--text)">${w.agentName}</strong></td>
+      <td style="color:#fbbf24;font-weight:600">${fmt(w.amount)}</td>
+      <td>${w.method}</td>
+      <td>${fmtDate(w.date)}</td>
+      <td><span class="${badgeClass(w.status)}">${w.status}</span></td>
+      <td>
+        <button class="btn-action" onclick="toggleWithdrawalStatus(${w.id})" title="Toggle Status">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </button>
+        <button class="btn-action delete" onclick="confirmDelete('withdrawal',${w.id})" title="Delete">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+      </td>
+    </tr>`).join('') : `<tr><td colspan="7">${emptyMsg('No withdrawals found')}</td></tr>`;
+}
+
+function filterWithdrawals(val) { renderWithdrawalsTable(val); }
+
+function openWithdrawalModal() {
+  populateAgentSelect('withdrawalAgent');
+  openModal('withdrawalModal');
+}
+
+function saveWithdrawal() {
+  const agentSel = document.getElementById('withdrawalAgent');
+  const agentId  = parseInt(agentSel.value);
+  const agent    = STATE.agents.find(a => a.id === agentId);
+  const amount   = parseFloat(document.getElementById('withdrawalAmount').value);
+  const method   = document.getElementById('withdrawalMethod').value;
+  const status   = document.getElementById('withdrawalStatus').value;
+
+  if (!agent || !amount || amount <= 0) { showToast('Please fill all required fields', 'error'); return; }
+
+  STATE.withdrawals.unshift({
+    id: STATE.nextWithdrawalId++, agentId, agentName: agent.name,
+    amount, method, status, date: new Date().toISOString().split('T')[0],
+  });
+
+  closeModal('withdrawalModal');
+  document.getElementById('withdrawalAmount').value = '';
+  renderWithdrawalsTable();
+  renderTransactions();
+  renderDashboard();
+  showToast('Withdrawal added successfully');
+}
+
+function toggleWithdrawalStatus(id) {
+  const w = STATE.withdrawals.find(x => x.id === id);
+  if (w) { w.status = w.status === 'Completed' ? 'Pending' : 'Completed'; }
+  renderWithdrawalsTable();
+  renderTransactions();
+  showToast('Status updated');
+}
+
+/* ═══════════════════ COMMISSIONS ═══════════════════ */
+function renderCommissions() {
+  const all = getAllTransactions();
+  let totalComm = 0;
+  let totalRate = 0;
+  let count = 0;
+
+  const rows = all.map((tx, i) => {
+    const rate = getAgentCommRate(tx.agentId);
+    const comm = (tx.amount * rate) / 100;
+    totalComm += comm;
+    totalRate += rate;
+    count++;
+    return { ...tx, rate, comm, idx: i + 1 };
+  });
+
+  document.getElementById('totalCommissionVal').textContent = fmt(totalComm);
+  document.getElementById('avgCommissionRate').textContent  = count > 0 ? (totalRate / count).toFixed(1) + '%' : '0%';
+  document.getElementById('commissionTxCount').textContent  = count;
+
+  const tbody = document.getElementById('commissionsTableBody');
+  tbody.innerHTML = rows.length ? rows.map(r => `
+    <tr>
+      <td>${r.idx}</td>
+      <td><strong style="color:var(--text)">${r.agentName}</strong></td>
+      <td><span class="${badgeClass(r.type)}">${r.type}</span></td>
+      <td>${fmt(r.amount)}</td>
+      <td>
+        <span style="background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);padding:2px 8px;border-radius:99px;font-size:0.75rem;font-weight:600">
+          ${r.rate}%
+        </span>
+      </td>
+      <td style="color:#34d399;font-weight:600">${fmt(r.comm)}</td>
+      <td>${fmtDate(r.date)}</td>
+    </tr>`).join('') : `<tr><td colspan="7">${emptyMsg('No commission records yet')}</td></tr>`;
+}
+
+/* ═══════════════════ TRANSACTIONS ═══════════════════ */
+function renderTransactions() {
+  const type  = STATE.txFilterType;
+  const query = STATE.txSearchQuery.toLowerCase();
+
+  let list = getAllTransactions();
+  if (type !== 'all') list = list.filter(tx => tx.type.toLowerCase() === type);
+  if (query)          list = list.filter(tx =>
+    tx.agentName.toLowerCase().includes(query) || tx.method.toLowerCase().includes(query) ||
+    tx.status.toLowerCase().includes(query) || tx.type.toLowerCase().includes(query));
+
+  const tbody = document.getElementById('transactionsTableBody');
+  tbody.innerHTML = list.length ? list.map((tx, i) => {
+    const rate = getAgentCommRate(tx.agentId);
+    const comm = (tx.amount * rate) / 100;
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong style="color:var(--text)">${tx.agentName}</strong></td>
+        <td><span class="${badgeClass(tx.type)}">${tx.type}</span></td>
+        <td style="color:${tx.type==='Deposit'?'#34d399':'#fbbf24'};font-weight:600">${fmt(tx.amount)}</td>
+        <td style="color:#a5b4fc;font-weight:500">${fmt(comm)} <span style="color:var(--text-muted);font-size:0.75rem">(${rate}%)</span></td>
+        <td>${tx.method}</td>
+        <td><span class="${badgeClass(tx.status)}">${tx.status}</span></td>
+        <td>${fmtDate(tx.date)}</td>
+      </tr>`;
+  }).join('') : `<tr><td colspan="8">${emptyMsg('No transactions found')}</td></tr>`;
+}
+
+function filterTransactions(type) {
+  STATE.txFilterType = type;
+  renderTransactions();
+}
+
+function searchTransactions(val) {
+  STATE.txSearchQuery = val;
+  renderTransactions();
+}
+
+/* ═══════════════════ DELETE ═══════════════════ */
+function confirmDelete(type, id) {
+  const messages = { agent: 'Delete this agent? All their transactions will remain.', deposit: 'Delete this deposit record?', withdrawal: 'Delete this withdrawal record?' };
+  document.getElementById('confirmMsg').textContent = messages[type] || 'Delete this item?';
+  const btn = document.getElementById('confirmBtn');
+  btn.onclick = () => { doDelete(type, id); closeModal('confirmModal'); };
+  openModal('confirmModal');
+}
+
+function doDelete(type, id) {
+  if (type === 'agent') {
+    STATE.agents = STATE.agents.filter(a => a.id !== id);
+    renderAgentsTable();
+    updateAgentCountBadge();
+    renderDashboard();
+    showToast('Agent deleted');
+  } else if (type === 'deposit') {
+    STATE.deposits = STATE.deposits.filter(d => d.id !== id);
+    renderDepositsTable();
+    renderTransactions();
+    renderCommissions();
+    renderDashboard();
+    showToast('Deposit deleted');
+  } else if (type === 'withdrawal') {
+    STATE.withdrawals = STATE.withdrawals.filter(w => w.id !== id);
+    renderWithdrawalsTable();
+    renderTransactions();
+    renderCommissions();
+    renderDashboard();
+    showToast('Withdrawal deleted');
+  }
+}
+
+/* ═══════════════════ MODALS ═══════════════════ */
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'flex';
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+
+function closeModalOnOverlay(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+
+/* ═══════════════════ AGENT SELECT ═══════════════════ */
+function populateAgentSelect(selectId) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = STATE.agents.length
+    ? STATE.agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('')
+    : '<option value="">No agents available</option>';
+}
+
+/* ═══════════════════ TOAST ═══════════════════ */
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type === 'error' ? '⚠ ' : '✓ ') + msg;
+  t.style.borderColor = type === 'error' ? 'rgba(239,68,68,0.3)' : 'rgba(16,185,129,0.3)';
+  t.style.color = type === 'error' ? '#fca5a5' : '#34d399';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ═══════════════════ EMPTY HELPERS ═══════════════════ */
+function emptyMsg(msg) {
+  return `<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:0.88rem">${msg}</div>`;
+}
+
+function emptyRow(cols, msg) {
+  return `<tr><td colspan="${cols}"><div style="text-align:center;padding:32px;color:var(--text-muted);font-size:0.88rem">${msg}</div></td></tr>`;
+}
+
+/* ═══════════════════ INIT ═══════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  seedData();
+  updateDate();
+  setInterval(updateDate, 60000);
+});
+
+</script>
+</body>
+</html>
