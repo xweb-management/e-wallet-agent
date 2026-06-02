@@ -1705,16 +1705,16 @@ function seedData() {
 
   const methods = ['Bank Transfer','Credit Card','Cash','Mobile Money','Crypto'];
   const depositData = [
-    { agent: 'James Owusu',    amount: 12500, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-28' },
-    { agent: 'Priya Kapoor',   amount: 8300,  method: 'Credit Card',    status: 'Completed', date: '2025-05-27' },
-    { agent: 'Lena Schmidt',   amount: 21000, method: 'Bank Transfer',  status: 'Pending',   date: '2025-05-26' },
-    { agent: 'Carlos Vega',    amount: 5700,  method: 'Cash',           status: 'Completed', date: '2025-05-25' },
+    { agent: 'Rahul Islam',    amount: 12500, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-28' },
+    { agent: 'Priya Khatun',   amount: 8300,  method: 'Credit Card',    status: 'Completed', date: '2025-05-27' },
+    { agent: 'MD Shakib',   amount: 21000, method: 'Bank Transfer',  status: 'Pending',   date: '2025-05-26' },
+    { agent: 'Shohan Ali',    amount: 5700,  method: 'Cash',           status: 'Completed', date: '2025-05-25' },
     { agent: 'Amina Hassan',   amount: 9400,  method: 'Mobile Money',   status: 'Pending',   date: '2025-05-24' },
-    { agent: 'Ryo Tanaka',     amount: 16200, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-23' },
-    { agent: 'Sophie Lefebvre',amount: 7800,  method: 'Credit Card',    status: 'Completed', date: '2025-05-22' },
-    { agent: 'David Mensah',   amount: 3300,  method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
-    { agent: 'James Owusu',    amount: 4500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
-    { agent: 'Priya Kapoor',   amount: 11000, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-19' },
+    { agent: 'Riham Choudhory',     amount: 16200, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-23' },
+    { agent: 'Shamim Usman',amount: 7800,  method: 'Credit Card',    status: 'Completed', date: '2025-05-22' },
+    { agent: 'Ariful Ahmed',   amount: 3300,  method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
+    { agent: 'Shohan Ali',    amount: 4500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
+    { agent: 'Shamim Usman',   amount: 11000, method: 'Bank Transfer',  status: 'Completed', date: '2025-05-19' },
   ];
   depositData.forEach(d => {
     const agent = STATE.agents.find(a => a.name === d.agent) || STATE.agents[0];
@@ -1723,14 +1723,14 @@ function seedData() {
   });
 
   const withdrawalData = [
-    { agent: 'James Owusu',    amount: 3200,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-27' },
-    { agent: 'Priya Kapoor',   amount: 1800,  method: 'Check',          status: 'Pending',   date: '2025-05-26' },
-    { agent: 'Lena Schmidt',   amount: 5500,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-25' },
-    { agent: 'Carlos Vega',    amount: 900,   method: 'Cash',           status: 'Completed', date: '2025-05-24' },
-    { agent: 'Ryo Tanaka',     amount: 4100,  method: 'Mobile Money',   status: 'Pending',   date: '2025-05-23' },
-    { agent: 'Sophie Lefebvre',amount: 2600,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-22' },
-    { agent: 'David Mensah',   amount: 700,   method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
-    { agent: 'James Owusu',    amount: 1500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
+    { agent: 'Rahul Islam',    amount: 3200,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-27' },
+    { agent: 'Priya Khatun',   amount: 1800,  method: 'Check',          status: 'Pending',   date: '2025-05-26' },
+    { agent: 'MD Shakib',   amount: 5500,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-25' },
+    { agent: 'Shohan Ali',    amount: 900,   method: 'Cash',           status: 'Completed', date: '2025-05-24' },
+    { agent: 'Amina Hassan',     amount: 4100,  method: 'Mobile Money',   status: 'Pending',   date: '2025-05-23' },
+    { agent: 'Riham Choudhory',amount: 2600,  method: 'Bank Transfer',  status: 'Completed', date: '2025-05-22' },
+    { agent: 'Ariful Ahmed',   amount: 700,   method: 'Cash',           status: 'Pending',   date: '2025-05-21' },
+    { agent: 'Shamim Usman',    amount: 1500,  method: 'Crypto',         status: 'Completed', date: '2025-05-20' },
   ];
   withdrawalData.forEach(d => {
     const agent = STATE.agents.find(a => a.name === d.agent) || STATE.agents[0];
